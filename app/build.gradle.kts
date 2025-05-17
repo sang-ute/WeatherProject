@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.kapt)
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -37,9 +38,10 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
-
+android.buildFeatures.buildConfig = true
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -60,7 +62,7 @@ dependencies {
     implementation (libs.androidx.appcompat)
     implementation (libs.material)
     implementation (libs.constraintlayout)
-    implementation ("androidx.cardview:cardview:1.0.0")
+    implementation (libs.androidx.cardview)
     implementation (libs.androidx.lifecycle.viewmodel.ktx)
     implementation (libs.androidx.activity.ktx)
     implementation (libs.androidx.preference.ktx)
