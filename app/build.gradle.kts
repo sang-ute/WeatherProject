@@ -3,13 +3,18 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.kapt)
+    id("com.google.dagger.hilt.android")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
     namespace = "com.sangute.weatherproject"
     compileSdk = 35
-
+    viewBinding {
+        enable = true
+    }
     defaultConfig {
         applicationId = "com.sangute.weatherproject"
         minSdk = 24
@@ -43,6 +48,10 @@ android {
 }
 android.buildFeatures.buildConfig = true
 dependencies {
+    implementation(libs.hilt.android.v2562)
+
+    kapt(libs.hilt.compiler.v2562)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
