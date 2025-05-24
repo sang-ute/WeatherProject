@@ -11,7 +11,9 @@ drawerlayout = "1.2.0"
 glide = "4.13.2"
 gradle = "7.4.2"
 hiltAndroid = "2.48.1"
+hiltAndroidVersion = "2.56.2"
 hiltCompiler = "2.48.1"
+hiltCompilerVersion = "2.56.2"
 instantsearchAndroid = "2.11.1"
 kotlin = "2.0.0"
 coreKtx = "1.16.0"
@@ -56,7 +58,9 @@ firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics-
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
+hilt-android-v2562 = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroidVersion" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompiler" }
+hilt-compiler-v2562 = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompilerVersion" }
 instantsearch-android = { module = "com.algolia:instantsearch-android", version.ref = "instantsearchAndroid" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
