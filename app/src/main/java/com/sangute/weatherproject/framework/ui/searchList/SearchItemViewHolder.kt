@@ -32,28 +32,8 @@ class SearchItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         itemView.setOnClickListener { onClickListener(searchItem) }
     }
 
-    /**
-     * If the application is in English, it returns the country as returned by the searchItem
-     * if it is in Spanish, search the country name in Spanish in the strings.
-     */
     private fun getCountryName(cityInfo: CityInfoModel, searchItem: SearchItemModel): String {
-        if (LANG == "en") {
-            return searchItem.country
-        }
-
-        var countryId: String = cityInfo.country.countryId.lowercase()
-        // Since "do" cannot be used as id, "dor" was used for the Dominican Republic.
-        if (countryId == "do") countryId = "dor"
-
-        val resourceId = itemView.context.resources.getIdentifier(
-            countryId, "string", itemView.context.packageName
-        )
-
-        if(resourceId == 0) {
-            return "NotFound"
-        }
-
-        return itemView.context.getString(resourceId)
+        return searchItem.country
     }
 
     private fun loadIcon(url: String, imageView: ImageView) {
