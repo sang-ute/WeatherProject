@@ -25,23 +25,22 @@ WeatherProject is a modern weather forecasting app that provides real-time and 4
 
 ## 🛠️ Technologies Used
 
-| Tech                      | Description                               |
-| ------------------------- | ----------------------------------------- |
-| **Kotlin**                | Modern Android programming language       |
-| **Android SDK**           | Core toolkit for Android development      |
-| **MVVM Architecture**     | Clean separation of UI and data layers    |
-| **SharedPreferences**     | Store user settings locally               |
-| **ViewModel**             | Handle UI-related data lifecycle-aware    |
-| **LiveData**              | Observe data changes and update UI        |
-| **ViewBinding**           | Safer access to layout views              |
-| **Coroutines**            | Simplified asynchronous programming       |
-| **Flows**                 | Reactive data stream management           |
-| **Retrofit**              | REST API networking client                |
-| **MPAndroidChart**        | Beautiful chart and graph rendering       |
-| **Glide**                 | Fast image loading and caching            |
-| **Algolia Search Client** | Blazing fast search for location queries  |
-| **Firebase Crashlytics**  | Real-time crash reporting and diagnostics |
-| **Dagger Hilt**           | Powerful dependency injection framework   |
+| Tech                      | Description                              |
+| ------------------------- | ---------------------------------------- |
+| **Kotlin**                | Modern Android programming language      |
+| **Android SDK**           | Core toolkit for Android development     |
+| **MVVM Architecture**     | Clean separation of UI and data layers   |
+| **SharedPreferences**     | Store user settings locally              |
+| **ViewModel**             | Handle UI-related data lifecycle-aware   |
+| **LiveData**              | Observe data changes and update UI       |
+| **ViewBinding**           | Safer access to layout views             |
+| **Coroutines**            | Simplified asynchronous programming      |
+| **Flows**                 | Reactive data stream management          |
+| **Retrofit**              | REST API networking client               |
+| **MPAndroidChart**        | Beautiful chart and graph rendering      |
+| **Glide**                 | Fast image loading and caching           |
+| **Algolia Search Client** | Blazing fast search for location queries |
+| **Dagger Hilt**           | Powerful dependency injection framework  |
 
 ---
 
