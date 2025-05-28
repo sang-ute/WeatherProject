@@ -2,8 +2,10 @@ package com.sangute.weatherproject.framework.ui.main
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -17,10 +19,12 @@ import com.sangute.weatherproject.domain.models.CityInfoModel
 import com.sangute.weatherproject.domain.models.ForecastResponseModel
 import com.sangute.weatherproject.domain.models.NextDayInfoModel
 import com.sangute.weatherproject.framework.helpers.DataStoreHelper
+import com.sangute.weatherproject.framework.notification.WeatherNotificationService
 import com.sangute.weatherproject.usecases.GetCityInfoUseCase
 import com.sangute.weatherproject.usecases.GetForecastResponseUseCase
 import com.sangute.weatherproject.usecases.GetNextDaysInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,6 +33,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
+    @ApplicationContext private val applicationContext: Context,
     private val getCityInfoUseCase: GetCityInfoUseCase,
     private val getForecastResponseUseCase: GetForecastResponseUseCase,
     private val getNextDaysInfoUseCase: GetNextDaysInfoUseCase,
@@ -62,6 +67,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             val result = getCityInfoUseCase.getCityInfo(geoId)
             _cityInfo.postValue(result)
+            restartNotificationService()
         }
     }
 
@@ -76,6 +82,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             val result = getCityInfoUseCase.getCityInfo(latitude, longitude)
             _cityInfo.postValue(result)
+            restartNotificationService()
         }
     }
 
@@ -310,6 +317,22 @@ class MainViewModel @Inject constructor(
             actNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
             actNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
             else -> false
+        }
+    }
+
+    private fun restartNotificationService() {
+        viewModelScope.launch {
+            // Stop the current service
+            val stopIntent = Intent(applicationContext, WeatherNotificationService::class.java)
+            applicationContext.stopService(stopIntent)
+            
+            // Start a new instance
+            val startIntent = Intent(applicationContext, WeatherNotificationService::class.java)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                applicationContext.startForegroundService(startIntent)
+            } else {
+                applicationContext.startService(startIntent)
+            }
         }
     }
 }

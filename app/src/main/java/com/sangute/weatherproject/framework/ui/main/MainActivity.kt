@@ -8,10 +8,12 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -37,9 +39,12 @@ import com.sangute.weatherproject.utils.GPS_REQUEST_CODE
 import com.sangute.weatherproject.utils.LANG
 import com.sangute.weatherproject.utils.Quadruple
 import com.sangute.weatherproject.utils.UNITS
+import com.sangute.weatherproject.framework.notification.WeatherNotificationService
+import com.sangute.weatherproject.framework.notification.WeatherNotificationWorkManager
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.ByteArrayOutputStream
 import java.io.FileOutputStream
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -52,6 +57,19 @@ class MainActivity : AppCompatActivity() {
 
     private var isFirstAppStart: Boolean = false
 
+    @Inject
+    lateinit var weatherNotificationWorkManager: WeatherNotificationWorkManager
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val allGranted = permissions.entries.all { it.value }
+        if (allGranted) {
+            startWeatherNotificationService()
+            weatherNotificationWorkManager.schedulePeriodicWeatherChecks()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(this.layoutInflater)
@@ -63,6 +81,8 @@ class MainActivity : AppCompatActivity() {
 
         createListeners()
         createObservers()
+
+        checkAndRequestPermissions()
     }
 
     private fun createListeners() {
@@ -485,5 +505,37 @@ class MainActivity : AppCompatActivity() {
         val locationManager: LocationManager =
             this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+    }
+
+    private fun checkAndRequestPermissions() {
+        val permissions = mutableListOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+
+        // Add notification permission for Android 13 and above
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissions.add(Manifest.permission.POST_NOTIFICATIONS)
+        }
+
+        val permissionsToRequest = permissions.filter {
+            ContextCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED
+        }.toTypedArray()
+
+        if (permissionsToRequest.isNotEmpty()) {
+            requestPermissionLauncher.launch(permissionsToRequest)
+        } else {
+            startWeatherNotificationService()
+            weatherNotificationWorkManager.schedulePeriodicWeatherChecks()
+        }
+    }
+
+    private fun startWeatherNotificationService() {
+        val serviceIntent = Intent(this, WeatherNotificationService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(serviceIntent)
+        } else {
+            startService(serviceIntent)
+        }
     }
 }
