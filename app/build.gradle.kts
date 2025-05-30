@@ -89,7 +89,7 @@ dependencies {
     implementation (libs.instantsearch.android)
     implementation (libs.firebase.crashlytics.ktx)
     implementation (libs.firebase.analytics.ktx)
-    debugImplementation (libs.leakcanary.android)
+//    debugImplementation (libs.leakcanary.android)
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
 
     testImplementation(libs.junit)
