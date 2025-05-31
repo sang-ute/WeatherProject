@@ -91,4 +91,4 @@ ALGOLIA_INDEX_NAME=Locations
 - [x] GPS support
 - [x] Save favorite locations (up to 3 places)
 - [x] Switching metrics (Celsius/Fahrenheit/Kelvin)
-- [ ] Notification system
+- [x] Notification system
